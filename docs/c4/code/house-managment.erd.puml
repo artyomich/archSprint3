@@ -52,8 +52,8 @@ entity "TelemetryDataType" as TelemetryDataType {
   telemetry_data_name : text
 }
 
-entity "Sheduler" as Sheduler {
-  *sheduler_id : number <<generated>>
+entity "Scheduler" as Scheduler {
+  *scheduler_id : number <<generated>>
   house_id : number
   device_id : number
   device_configurations : JSON
@@ -73,9 +73,9 @@ DeviceType ||..o{ DeviceConfigurations
 
 TelemetryData }|..|| TelemetryDataType
 
-House }o..o{ Sheduler
-Device }o..o{ Sheduler
-DeviceConfigurations }o..o{ Sheduler
-CustomDeviceConfigurations }o..o{ Sheduler
+House }o..o{ Scheduler
+Device }o..o{ Scheduler
+DeviceConfigurations }o..o{ Scheduler
+CustomDeviceConfigurations }o..o{ Scheduler
 
 @enduml

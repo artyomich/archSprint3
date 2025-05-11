@@ -1,27 +1,60 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-!$domains_root_path = ..
+!$domains_root_path = ../.
 
 !define _actors $domains_root_path/_shared/actors
 !define _systems $domains_root_path/_shared/systems
+!define _containers $domains_root_path/_shared/containers
 !define _external_systems $domains_root_path/_shared/external-systems
 
-!include _actors/persons.iuml!client
-!include _systems/systems.iuml!warm_home
-!include _external_systems/devices.iuml!heater
+skinparam wrapWidth 1200
 
-
-skinparam wrapWidth 500
 LAYOUT_WITH_LEGEND()
-LAYOUT_TOP_DOWN()
-
+LAYOUT_LANDSCAPE()
 title
     <b>Тёплый дом</b>
     <i>Приложение по управлению умным домом (SaaS)</i>
 end title
 
-Rel_D(client, warm_home, "Управляет домом", "REST API")
-Rel_R(warm_home, heater, "Управляет устройством", "REST API")
+!include _containers/containers.iuml!api_gateway
+
+
+System_Boundary(warm_house, "Контейнер управления устройствами в домах") {
+    Component(device_settings_controller, "Контроллер работы со списком устройств", "Spring controller", "Обрабатывает запросы пользователя и вызывает бизнес логику из сервиса")
+    Component(device_settings_service, "Сервис работы со списком устройств", "Spring service", "Содержит бизнес логику")
+    Component(device_settings_repository, "Репозиторий работы со списком устройств", "Spring repository", "Ответственен за работу с внешней системой")
+
+    Rel(device_settings_controller, device_settings_service, "")
+    Rel(device_settings_service, device_settings_repository, "")
+
+    Component(device_management_controller, "Контроллер управления устройствами", "Spring controller", "Обрабатывает запросы пользователя и вызывает бизнес логику из сервиса")
+    Component(device_management_service, "Сервис управления устройствами", "Spring service", "Содержит бизнес логику")
+    Component(device_management_repository, "Репозиторий управления устройствами", "Spring repository", "Ответственен за работу с внешней системой")
+
+    Rel(device_management_controller, device_settings_service, "Запрашивает настройки устройства")
+    Rel(device_management_controller, device_management_service, "")
+    Rel(device_management_service, device_management_repository, "")
+
+    Component(device_events_controller, "Контроллер обработки событий", "Spring controller", "Обрабатывает запросы пользователя и вызывает бизнес логику из сервиса")
+
+    Rel(device_events_controller, device_settings_service, "Обновляет настройки устройства при необходимости")
+    Rel(device_events_controller, device_management_service, "Управляет другими устройствами при необходимости")
+
+}
+
+!include _containers/containers.iuml!house_management_database
+!include _containers/containers.iuml!house_event_broker
+
+
+Rel(api_gateway, device_settings_controller, "Перенаправляет запросы")
+Rel(api_gateway, device_management_controller, "Перенаправляет запросы")
+Rel(device_settings_repository, house_management_database, "Сохраняет данные в бд")
+Rel(device_management_repository, house_event_broker, "Отправляет инструкции для выполнения")
+Rel(house_event_broker, device_events_controller, "Уведомляет о новом событии")
+
+
+
 
 @enduml

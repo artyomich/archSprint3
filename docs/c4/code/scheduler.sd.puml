@@ -8,7 +8,7 @@
 !define _external_systems $domains_root_path/_shared/external-systems
 
 !include _actors/persons.iuml!client
-!include _systems/systems.iuml!warm_home
+!include _systems/systems.iuml!warm_house
 !include _external_systems/devices.iuml!heater
 
 
@@ -21,7 +21,7 @@ title
     <i>Приложение по управлению умным домом (SaaS)</i>
 end title
 
-Rel_D(client, warm_home, "Управляет домом", "REST API")
-Rel_R(warm_home, heater, "Управляет устройством", "REST API")
+Rel_D(client, warm_house, "Управляет домом", "REST API")
+Rel_R(warm_house, heater, "Управляет устройством", "REST API")
 
 @enduml

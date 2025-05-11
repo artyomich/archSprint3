@@ -9,5 +9,5 @@ title
     <i>Приложение по управлению умным домом (SaaS)</i>
 end title
 
-!include ./shared/systems/systems.iuml!warm_house
+!include ./_shared/systems/systems.iuml!warm_house
 @enduml

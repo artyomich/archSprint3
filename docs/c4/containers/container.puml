@@ -22,13 +22,13 @@ end title
 
 !include _actors/persons.iuml!client
 
-System_Boundary(warm_house, "SaaS-платформа увправления умным домом") {
+System_Boundary(warm_house, "SaaS-платформа управления умным домом") {
     !include _containers/containers.iuml!web_app
     !include _containers/containers.iuml!api_gateway
     !include _containers/containers.iuml!house_monitoring
     !include _containers/containers.iuml!house_monitoring_database
-    !include _containers/containers.iuml!house_managment
-    !include _containers/containers.iuml!house_managment_database
+    !include _containers/containers.iuml!house_management
+    !include _containers/containers.iuml!house_management_database
     !include _containers/containers.iuml!command_executor
     !include _containers/containers.iuml!house_event_broker
 
@@ -38,9 +38,9 @@ System_Boundary(warm_house, "SaaS-платформа увправления ум
     Rel_D(house_monitoring, house_monitoring_database, "Сохраняет данные", "HTTPS")
     Rel(house_monitoring, house_event_broker, "Отправляет/Получает события", "HTTPS")
 
-    Rel(api_gateway, house_managment, "Перенаправляет запросы", "HTTPS")
-    Rel_D(house_managment, house_managment_database, "Сохраняет данные", "HTTPS")
-    Rel(house_managment, house_event_broker, "Отправляет/Получает события", "HTTPS")
+    Rel(api_gateway, house_management, "Перенаправляет запросы", "HTTPS")
+    Rel_D(house_management, house_management_database, "Сохраняет данные", "HTTPS")
+    Rel(house_management, house_event_broker, "Отправляет/Получает события", "HTTPS")
 }
 
 System_Boundary(client_house, "Устройства в доме") {
