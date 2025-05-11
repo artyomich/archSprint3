@@ -3,13 +3,13 @@
 
 !$domains_root_path = ..
 
-!define actors $domains_root_path/shared/actors
-!define systems $domains_root_path/shared/systems
-!define external_systems $domains_root_path/shared/external-systems
+!define _actors $domains_root_path/_shared/actors
+!define _systems $domains_root_path/_shared/systems
+!define _external_systems $domains_root_path/_shared/external-systems
 
-!include actors/persons.iuml!client
-!include systems/systems.iuml!warm_home
-!include external_systems/devices.iuml!heater
+!include _actors/persons.iuml!client
+!include _systems/systems.iuml!warm_home
+!include _external_systems/devices.iuml!heater
 
 
 skinparam wrapWidth 500

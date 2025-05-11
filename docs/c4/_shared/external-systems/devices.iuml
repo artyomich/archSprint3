@@ -8,7 +8,7 @@ Person(user, "Пользователь", "Конечный пользовате�
 
 ' Внешние устройства
 System_Ext(smart_device, "Умное устройство", "ESP32/Arduino", "Устройства управления")
-System_Ext(rele, "Реле", "Физическое реле", "Переключение электрических цепей")
+System_Ext(relay, "Реле", "Физическое реле", "Переключение электрических цепей")
 System_Ext(sensor, "Специальные датчики", "Датчики температуры, движения и т.п.", "Сбор данных окружения")
 System_Ext(heater, "Устройство отопления", "Термостат/обогреватель", "Контроль температуры помещения")
 
@@ -35,6 +35,6 @@ Rel(house_managment, house_event_broker, "Публикует события")
 Rel(house_event_broker, command_executor, "Передаёт команды на исполнение")
 Rel(command_executor, smart_device, "Отправляет команды управления")
 Rel(smart_device, sensor, "Считывает показания")
-Rel(smart_device, rele, "Управляет состоянием")
+Rel(smart_device, relay, "Управляет состоянием")
 Rel(smart_device, heater, "Управляет нагревом")
 Rel(sensor, house_event_broker, "Публикует данные в поток")

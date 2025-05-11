@@ -17,8 +17,8 @@ LAYOUT_WITH_LEGEND()
 LAYOUT_TOP_DOWN()
 
 title
-    <b>"Warm Home" PublicationArch v2022.05.26</b>
-    <i>SaaS платформа по управлению умным домом</i>
+    <b>Тёплый дом</b>
+    <i>Приложение по управлению умным домом (SaaS)</i>
 end title
 
 Rel_D(client, warm_house, "Управляет домом", "REST API")
