@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+' Определяем пользователей и систему
+Person(user, "Пользователь", "WEB-интерфейс управления умным домом")
+
+Boundary(house_system, "Система умного дома") {
+  Container(web_app, "WEB-App", "React", "Веб-интерфейс управления умным домом")
+  Container(api_gateway, "API-Gateway", "Nginx", "Проксирование трафика")
+  Container(house_monitoring, "House monitoring", "Spring", "Отображение текущего состояния системы")
+  ContainerDb(house_monitoring_database, "House monitoring database", "Postgres", "Хранение данных мониторинга")
+  Container(house_managment, "House managment", "Spring", "Управление системой")
+  ContainerDb(house_managment_database, "House managment database", "Postgres", "Хранение данных управления")
+  ContainerQueue(house_event_broker, "Брокер сообщений", "Apache Kafka", "Хранение событий системы")
+  Container(command_executor, "Command executor", "Spring", "Выполнение команд на устройствах")
+}
+
+' Связи
+Rel(user, web_app, "Использует")
+Rel(web_app, api_gateway, "Отправляет запросы к API")
+Rel(api_gateway, house_monitoring, "Запрашивает данные")
+Rel(api_gateway, house_managment, "Передаёт команды")
+Rel(house_monitoring, house_monitoring_database, "Чтение/запись данных")
+Rel(house_managment, house_managment_database, "Чтение/запись данных")
+Rel(house_managment, house_event_broker, "Публикует события")
+Rel(house_event_broker, command_executor, "Передаёт команды на исполнение")
+Rel(command_executor, house_event_broker, "Подтверждает выполнение")
+@enduml

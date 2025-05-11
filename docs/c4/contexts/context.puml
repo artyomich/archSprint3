@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$domains_root_path = ..
+
+!define _actors $domains_root_path/_shared/actors
+!define _systems $domains_root_path/_shared/systems
+!define _external_systems $domains_root_path/_shared/external-systems
+
+!include _actors/persons.iuml!client
+!include _systems/systems.iuml!warm_house
+!include _external_systems/devices.iuml!heater
+
+
+skinparam wrapWidth 500
+LAYOUT_WITH_LEGEND()
+LAYOUT_TOP_DOWN()
+
+title
+    <b>"Warm Home" PublicationArch v2022.05.26</b>
+    <i>SaaS платформа по управлению умным домом</i>
+end title
+
+Rel_D(client, warm_house, "Управляет домом", "REST API")
+Rel_R(warm_house, heater, "Управляет устройством", "REST API")
+
+@enduml
