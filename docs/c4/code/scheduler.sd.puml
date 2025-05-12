@@ -7,9 +7,9 @@
 !define _systems $domains_root_path/_shared/systems
 !define _external_systems $domains_root_path/_shared/external-systems
 
-!include _actors/persons.iuml!client
-!include _systems/systems.iuml!warm_house
-!include _external_systems/devices.iuml!heater
+!include _actors/persons.iuml
+!include _systems/systems.iuml
+!include _external_systems/devices.iuml
 
 
 skinparam wrapWidth 500

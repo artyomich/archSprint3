@@ -20,17 +20,10 @@ end title
 ' skinparam linetype polyline
 ' skinparam linetype ortho
 
-!include _actors/persons.iuml!client
+!include _actors/persons.iuml
 
 System_Boundary(warm_house, "SaaS-платформа управления умным домом") {
-    !include _containers/containers.iuml!web_app
-    !include _containers/containers.iuml!api_gateway
-    !include _containers/containers.iuml!house_monitoring
-    !include _containers/containers.iuml!house_monitoring_database
-    !include _containers/containers.iuml!house_management
-    !include _containers/containers.iuml!house_management_database
-    !include _containers/containers.iuml!command_executor
-    !include _containers/containers.iuml!house_event_broker
+    !include _containers/containers.iuml
 
     Rel(web_app, api_gateway, "Отправляет запросы", "HTTPS")
 
@@ -44,10 +37,7 @@ System_Boundary(warm_house, "SaaS-платформа управления умн
 }
 
 System_Boundary(client_house, "Устройства в доме") {
-    !include _external_systems/devices.iuml!smart_device
-    !include _external_systems/devices.iuml!relay
-    !include _external_systems/devices.iuml!sensor
-    !include _external_systems/devices.iuml!heater
+    !include _external_systems/devices.iuml
 
     Lay_L(smart_device, relay)
     Lay_L(relay, sensor)

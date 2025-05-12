@@ -18,7 +18,7 @@ title
     <i>Приложение по управлению умным домом (SaaS)</i>
 end title
 
-!include _containers/containers.iuml!api_gateway
+!include _containers/containers.iuml
 
 
 System_Boundary(warm_house, "Контейнер управления устройствами в домах") {
@@ -44,9 +44,7 @@ System_Boundary(warm_house, "Контейнер управления устро�
 
 }
 
-!include _containers/containers.iuml!house_management_database
-!include _containers/containers.iuml!house_event_broker
-
+!include _containers/containers.iuml
 
 Rel(api_gateway, device_settings_controller, "Перенаправляет запросы")
 Rel(api_gateway, device_management_controller, "Перенаправляет запросы")

@@ -28,3 +28,43 @@ Rel(house_management, house_event_broker, "Публикует события")
 Rel(house_event_broker, command_executor, "Передаёт команды на исполнение")
 Rel(command_executor, house_event_broker, "Подтверждает выполнение")
 @enduml
+
+@startuml (id=web_app)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  Container(web_app, "WEB-App", "React", "Веб-интерфейс управления умным домом")
+@enduml
+
+@startuml (id=api_gateway)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  Container(api_gateway, "API-Gateway", "Nginx", "Проксирование трафика")
+@enduml
+
+@startuml (id=house_monitoring)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  Container(house_monitoring, "House monitoring", "Spring", "Отображение текущего состояния системы")
+@enduml
+
+@startuml (id=house_monitoring_database)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  ContainerDb(house_monitoring_database, "House monitoring database", "Postgres", "Хранение данных")
+@enduml
+
+@startuml (id=house_managment)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  Container(house_managment, "House managment", "Spring", "Управление системой")
+@enduml
+
+@startuml (id=house_managment_database)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  ContainerDb(house_managment_database, "House managment database", "Postgres", "Хранение данных")
+@enduml
+
+@startuml (id=house_event_broker)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  ContainerQueue(house_event_broker, "Брокер сообщений", "Apache Kafka", "Хранение событий системы")
+@enduml
+
+@startuml (id=command_executor)
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  Container(command_executor, "Command executor", "Spring", "выполнение команд на устройствах")
+@enduml
