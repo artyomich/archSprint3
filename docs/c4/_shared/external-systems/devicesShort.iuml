@@ -1,0 +1,13 @@
+@startuml
+    !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+    System_Ext(smart_device, "Умное устройство")
+    System_Ext(relay, "Реле")
+    System_Ext(sensor, "Специальные датчики")
+    System_Ext(heater, "Устройства отопления")
+
+    Rel(user, web_app, "Управляет умным домом", "HTTPS")
+    Rel_D(command_executor, house_event_broker, "Отправляет/Получает события")
+    Rel(command_executor, client_house, "Отправляет команды")
+    Rel(client_house, command_executor, "Отправляет результаты команд")
+
+@enduml

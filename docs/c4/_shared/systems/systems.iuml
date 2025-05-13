@@ -1,5 +1,0 @@
-@startuml (id=warm_house)
-    !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
-    System(warm_house, "Тёплый дом", "Приложение по управлению умным домом (SaaS)")
-@enduml

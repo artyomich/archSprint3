@@ -8,13 +8,13 @@
 !define _external_systems $domains_root_path/_shared/external-systems
 
 !include _actors/persons.iuml
-!include _systems/systems.iuml
+
 !include _external_systems/devices.iuml
 
 
 skinparam wrapWidth 500
 LAYOUT_WITH_LEGEND()
-LAYOUT_TOP_DOWN()
+` LAYOUT_TOP_DOWN()
 
 title
     <b>Тёплый дом</b>

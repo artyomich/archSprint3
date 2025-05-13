@@ -1,0 +1,33 @@
+@startuml
+top to bottom direction
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+' LAYOUT_LANDSCAPE()
+title
+    <b>Тёплый дом - управление получения данных с устройств</b>
+end title
+
+System_Ext(sensor, "Sensor", "Получение и обработка  данных с датчиков")
+
+Container_Boundary(SensorService, "SensorService") {
+  Container(sensor_service, "Sensor Service", "Java, Spring", "Получение и обработка  данных с датчиков")
+}
+
+Container(sensor_service, "Web Application", "Java, Spring") {
+  Component(sensor_controller, "Sensor Controller", "Принимает данные с датчиков")
+  Component(device_sensor_driver, "Device Sensor Driver", "Взаимодействует с датчиками")
+  Component(ServiceLayer, "Service Layer", "Business logic")
+  Component(RepositoryLayer, "Repository Layer", "Логика доступа к данным")
+}
+
+Container(api_gateway, "APIGateway", "Nginx", "Маршрутизация запросов к API")
+ContainerDb(SensorDB, "SensorDB", "MongoDB", "Хранилище данных полученных с датчиков")
+Rel(ServiceLayer, device_sensor_driver, "Взаимодействует с устройством")
+Rel(sensor_controller, ServiceLayer, "Обращается к логике конфигурирования устройства")
+Rel(RepositoryLayer, SensorDB, "Транзакционный доступ к данным")
+Rel(ServiceLayer, RepositoryLayer, "Чтение-запись данных")
+Rel(device_sensor_driver, sensor, "Взаимодействует с устройствами")
+Rel(api_gateway, sensor_controller, "Запрос событий в датчиков")
+
+@enduml

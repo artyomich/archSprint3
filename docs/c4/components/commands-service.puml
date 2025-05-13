@@ -1,0 +1,33 @@
+@startuml
+top to bottom direction
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+' LAYOUT_LANDSCAPE()
+title
+    <b>Тёплый дом - управление командами на устройства</b>
+end title
+
+System_Ext(remotecontrol, "Remote control", "Устройства дистанционного управления")
+
+Container_Boundary(CommandService, "Command Service") {
+  Container(command_service, "Command Service", "Java, Spring", "Отдача команд, контроль их исполнения")
+}
+
+Container(command_service, "Web Application", "Java, Spring") {
+  Component(command_controller, "Command Controller", "Управляет отдачей и исполнением команд")
+  Component(command_driver, "Device Driver", "Взаимодействует с устройством по командам")
+  Component(service_layer, "Service Layer", "Business logic")
+  Component(repository_layer, "Repository Layer", "Логика доступа к данным")
+}
+
+Container(api_gateway, "API Gateway", "Nginx", "Маршрутизация запросов к API")
+ContainerDb(CommandDB, "Device DB", "MongoDB", "Хранилище конфигурационных данных устройств")
+Rel(command_controller, service_layer, "Обращается к логике исполнения команд")
+Rel(service_layer, command_driver, "Взаимодействует с устройством")
+Rel(service_layer, repository_layer, "Чтение-запись данных")
+Rel(repository_layer, CommandDB, "Транзакционный доступ к данным")
+Rel(command_driver, remotecontrol, "Взаимодействует с устройством")
+Rel(api_gateway, command_controller, "Команды устройству", "asinc")
+
+@enduml

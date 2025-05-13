@@ -1,6 +1,8 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
+top to bottom direction
+
 !$domains_root_path = ../.
 
 !define _actors $domains_root_path/_shared/actors
@@ -11,42 +13,15 @@
 skinparam wrapWidth 1200
 
 LAYOUT_WITH_LEGEND()
-LAYOUT_LANDSCAPE()
+' LAYOUT_LANDSCAPE()
 title
-    <b>Тёплый дом</b>
-    <i>Приложение по управлению умным домом (SaaS)</i>
+    <b>Контейнеры приложения "Тёплый дом"</b>
 end title
-
-' skinparam linetype polyline
-' skinparam linetype ortho
-
-!include _actors/persons.iuml
 
 System_Boundary(warm_house, "SaaS-платформа управления умным домом") {
     !include _containers/containers.iuml
-
-    Rel(web_app, api_gateway, "Отправляет запросы", "HTTPS")
-
-    Rel(api_gateway, house_monitoring, "Перенаправляет запросы", "HTTPS")
-    Rel_D(house_monitoring, house_monitoring_database, "Сохраняет данные", "HTTPS")
-    Rel(house_monitoring, house_event_broker, "Отправляет/Получает события", "HTTPS")
-
-    Rel(api_gateway, house_management, "Перенаправляет запросы", "HTTPS")
-    Rel_D(house_management, house_management_database, "Сохраняет данные", "HTTPS")
-    Rel(house_management, house_event_broker, "Отправляет/Получает события", "HTTPS")
 }
-
 System_Boundary(client_house, "Устройства в доме") {
-    !include _external_systems/devices.iuml
-
-    Lay_L(smart_device, relay)
-    Lay_L(relay, sensor)
-    Lay_L(sensor, heater)
+    !include _external_systems/devicesShort.iuml
 }
-
-Rel(client, web_app, "Управляет умным домом", "HTTPS")
-Rel_D(command_executor, house_event_broker, "Отправляет/Получает события")
-Rel(command_executor, client_house, "Отправляет команды")
-Rel(client_house, command_executor, "Отправляет результаты команд")
-
 @enduml
