@@ -1,0 +1,41 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+' Определяем пользователей и систему
+Person(user, "Пользователь", "WEB-интерфейс управления умным домом")
+Person(admin, "Администратор", "Администратор системы")
+
+Boundary(house_system, "Система умного дома") {
+  Container(web_app, "WEB приложение", "React", "Веб-интерфейс управления умным домом")
+  Container(api_gateway, "API-Gateway", "Nginx", "Маршрутизация запросов к API")
+  Container(admin_service, "Admin Service", "Java, Spring", "Управление пользователями и домами")
+  ContainerDb(admin_db, "Admin DB", "Postges", "Хранилище данных о пользователях и домах")
+  Container(auth, "Auth", "Auth", "Поддержка JWT")
+  Container(house_monitoring, "House monitoring", "Java, Spring", "Отображение текущего состояния системы")
+  ContainerDb(house_monitoring_database, "House monitoring database", "Postgres", "Хранение данных мониторинга")
+  Container(house_management, "House management", "Java, Spring", "Управление системой")
+  ContainerDb(house_management_database, "House management database", "Postgres", "Хранение данных управления")
+  ContainerQueue(house_event_broker, "Брокер сообщений", "Apache Kafka", "Поддержка очередей сообщений")
+  Container(command_executor, "Command executor", "Java, Spring", "Выполнение команд на устройствах")
+  ContainerDb(command_db, "CommandDB", "MongoDB", "Хранилище команд")
+}
+
+' Связи
+Rel(user, web_app, "Использует приложение для управления умным домом")
+Rel(admin, web_app, "Использует приложение для управления умным домом")
+Rel(web_app, api_gateway, "Отправляет запросы к API")
+Rel(api_gateway, house_monitoring, "Запрашивает данные")
+Rel(api_gateway, house_management, "Передаёт команды")
+Rel(admin_service, admin_db, "Регистрационные данные пользователя и домов", "REST")
+Rel(api_gateway, admin_service, "Регистрационные данные пользователя и дома", "REST")
+Rel(api_gateway, auth, "Запрос JWT", "REST")
+Rel(admin_service, auth, "Роли", "REST")
+Rel(house_monitoring, house_monitoring_database, "Чтение/запись данных")
+Rel(house_management, house_management_database, "Чтение/запись данных")
+Rel(house_management, house_event_broker, "Публикует события")
+Rel(house_event_broker, command_executor, "Передаёт команды на исполнение")
+Rel(command_executor, house_event_broker, "Подтверждает выполнение")
+Rel(command_executor, command_db, "Журнализация команд", "REST")
+@enduml

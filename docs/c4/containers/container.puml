@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+top to bottom direction
+
+!$domains_root_path = ../.
+
+!define _actors $domains_root_path/_shared/actors
+!define _systems $domains_root_path/_shared/systems
+!define _containers $domains_root_path/_shared/containers
+!define _external_systems $domains_root_path/_shared/external-systems
+
+skinparam wrapWidth 1200
+
+LAYOUT_WITH_LEGEND()
+' LAYOUT_LANDSCAPE()
+title
+    <b>Контейнеры приложения "Тёплый дом"</b>
+end title
+
+System_Boundary(warm_house, "SaaS-платформа управления умным домом") {
+    !include _containers/containers.iuml
+}
+System_Boundary(client_house, "Устройства в доме") {
+    !include _external_systems/devicesShort.iuml
+}
+@enduml

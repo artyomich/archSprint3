@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$domains_root_path = ..
+
+!define _actors $domains_root_path/_shared/actors
+!define _systems $domains_root_path/_shared/systems
+!define _external_systems $domains_root_path/_shared/external-systems
+
+!include _actors/persons.iuml
+
+!include _external_systems/devices.iuml
+
+
+skinparam wrapWidth 500
+LAYOUT_WITH_LEGEND()
+` LAYOUT_TOP_DOWN()
+
+title
+    <b>Тёплый дом</b>
+    <i>Приложение по управлению умным домом (SaaS)</i>
+end title
+
+Rel_D(client, warm_house, "Управляет домом", "REST API")
+Rel_R(warm_house, heater, "Управляет устройством", "REST API")
+
+@enduml

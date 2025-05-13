@@ -1,0 +1,33 @@
+@startuml
+top to bottom direction
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+' LAYOUT_LANDSCAPE()
+title
+    <b>Тёплый дом - регистрация пользователей и домов</b>
+end title
+
+Container_Boundary(admin_service, "Admin Service") {
+  ContainerDb(adminService, "Admin Service", "Java, Spring", "Регистрация пользователей и домов")
+}
+Container(auth, "Auth", "Auth", "Поддержка JWT")
+
+Container(adminService, "Web Application", "Java, Spring") {
+  Component(user_controller, "User Controller", "Управляет регистрационными данными пользователя")
+  Component(house_management, "House Management", "Управляет данными домов")
+  Component(service_layer, "Service Layer", "Бизнес логика")
+  Component(repository_layer, "Repository Layer", "Организация доступа к данным")
+}
+
+ContainerDb(admin_db, "Admin DB", "PostgreSQL", "Хранилище данных о пользователях и домовладениях")
+Container(api_gateway, "API-gateway", "Nginx", "Маршрутизация запросов к API")
+Rel(user_controller, service_layer, "Обращается к логике регистрации пользователя")
+Rel(house_management, service_layer, "Обращается к логике регистрации домовладения")
+Rel(service_layer, repository_layer, "Запись и чтение данных")
+Rel(repository_layer, admin_db, "Транзакционный доступ к данным")
+Rel(service_layer, auth, "Роли пользователей")
+Rel(api_gateway, user_controller, "Регистрационные данные пользователя и дома", "REST")
+Rel(api_gateway, house_management, "Регистрационные данные пользователя и дома", "REST")
+
+@enduml

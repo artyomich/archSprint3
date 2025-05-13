@@ -1,0 +1,43 @@
+@startuml
+title <b>Тёплый дом - Code Diagram - Регистрация пользователей и домов</b>
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+enum RightType {
+  show
+  edit
+  isAdmin
+  deleted
+}
+
+class User {
+  +String name
+  +String email
+  +List<Rights> rights
+  +void register()
+  +void login()
+}
+
+class House {
+  +String type
+  +Date startDate
+  +Date endDate
+  +List<User> owners
+  +void activate()
+  +void cancel()
+}
+
+class Rights {
+  +RightType type
+  +String resource
+  +void addRight()
+  +void removeRight()
+}
+
+User "1" -- "0..*" Rights : has >
+House "1" -- "0..*" User : owns >
+Rights "0..*" -- "1" User : assigned to >
+
+@enduml

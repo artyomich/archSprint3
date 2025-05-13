@@ -1,0 +1,33 @@
+@startuml
+top to bottom direction
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+' LAYOUT_LANDSCAPE()
+title
+    <b>Тёплый дом - конфигурирование устройств</b>
+end title
+
+System_Ext(remote_control, "Remote control", "Устройство дистанционного управления")
+
+Container_Boundary(DeviceService, "DeviceService") {
+  Container(DeviceServ, "DeviceService", "Java, Spring", "Конфигурирование устройств")
+}
+
+Container(DeviceServ, "Web Application", "Java, Spring") {
+  Component(config_controller, "Config Controller", "Управляет конфигурированием устройств")
+  Component(device_driver, "Device Driver", "Взаимодействует с устройством по настройке конфигурации")
+  Component(service_layer, "Service Layer", "Business logic")
+  Component(repository_layer, "Repository Layer", "Логика доступа к данным")
+}
+
+Container(api_gateway, "API-gateway", "Nginx", "Маршрутизация запросов к API")
+ContainerDb(device_db, "Device DB", "MongoDB", "Хранилище конфигурационных данных устройств")
+Rel(config_controller, service_layer, "Обращается к логике конфигурирования устройства")
+Rel(service_layer, device_driver, "Взаимодействует с устройством")
+Rel(service_layer, repository_layer, "Чтение-запись данных")
+Rel(repository_layer, device_db, "Транзакционный доступ к данным")
+Rel(device_driver, remote_control, "Управляет отоплением (вкл/выкл), управляет температурой")
+Rel(api_gateway, config_controller, "Запрос на конфигурирование", "REST")
+
+@enduml

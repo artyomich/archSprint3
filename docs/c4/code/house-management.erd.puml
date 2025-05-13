@@ -1,0 +1,81 @@
+@startuml
+
+skinparam linetype ortho
+
+entity "User" as User {
+  *user_id : number <<generated>>
+  full_name : text
+  email : text
+  phone : text
+}
+
+entity "House" as House {
+  *house_id : number <<generated>>
+  city: text
+  adress: text
+}
+
+entity "Device" as Device {
+  *device_id : number <<generated>>
+  serial_number : text
+}
+
+entity "Device type" as DeviceType {
+  *device_type_id : number <<generated>>
+  device_type_name : text
+}
+
+entity "Device configurations" as DeviceConfigurations {
+  *device_configurations_id : number <<generated>>
+  ' *device_id : number <<FK>>
+  device_configurations : JSON
+}
+
+entity "Custom device configurations" as CustomDeviceConfigurations {
+  *custom_device_configurations_id : number <<generated>>
+  ' *device_id : number <<FK>>
+  device_configurations : JSON
+}
+
+entity "Device Tags" as DeviceTags {
+  *device_tag_id : number <<generated>>
+  device_tag_name : text
+}
+
+entity "TelemetryData" as TelemetryData {
+  *telemetry_data_id : number <<generated>>
+  telemetry_data : JSON
+}
+
+entity "TelemetryDataType" as TelemetryDataType {
+  *telemetry_data_type_id : number <<generated>>
+  telemetry_data_name : text
+}
+
+entity "Scheduler" as Scheduler {
+  *scheduler_id : number <<generated>>
+  house_id : number
+  device_id : number
+  device_configurations : JSON
+  status : number
+}
+
+User ||..o{ House
+
+House ||..o{ Device
+
+Device }o..|| DeviceType
+Device }o..o{ DeviceTags
+Device ||..o{ CustomDeviceConfigurations
+Device ||..o{ TelemetryData
+
+DeviceType ||..o{ DeviceConfigurations
+
+TelemetryData }|..|| TelemetryDataType
+
+House }o..o{ Scheduler
+Device }o..o{ Scheduler
+DeviceConfigurations }o..o{ Scheduler
+CustomDeviceConfigurations }o..o{ Scheduler
+
+@enduml
